@@ -1,6 +1,7 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow , ipcMain} = require('electron');
 const path = require('path');
-
+const Store = require('electron-store');
+const store = new Store();
 let mainWindow;
 
 function createWindow() {
@@ -49,4 +50,14 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+//----------------------| Theme persistence  |------------------------------
+ // Handle theme persistence
+ ipcMain.handle('get-theme', () => {
+  return store.get('theme', 'light'); // Default to 'light' if not set
+});
+
+ipcMain.handle('save-theme', (_event, theme) => {
+  store.set('theme', theme);
 });

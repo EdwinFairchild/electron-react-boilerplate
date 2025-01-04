@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import {
   createTheme,
   ThemeProvider,
@@ -19,6 +19,15 @@ function App() {
   const { isLeftOpen, isRightOpen } = useSidebarStore();
   const [selectedCard, setSelectedCard] = useState(null); // Track the selected card
 
+
+    // Load theme on startup
+    useEffect(() => {
+      const loadTheme = async () => {
+        const savedTheme = await window.api.getTheme();
+        setIsDark(savedTheme === 'dark');
+      };
+      loadTheme();
+    }, []);
   // Create the Material-UI theme dynamically based on `isDark`
   const theme = createTheme({
     palette: {
@@ -42,8 +51,12 @@ function App() {
     },
   });
 
-  const toggleTheme = () => setIsDark((prev) => !prev); // Theme toggle handler
-
+  const toggleTheme = () => {
+    console.log('toggleTheme called'); // Log when the function is triggered
+    const newTheme = !isDark ? 'dark' : 'light';
+    setIsDark(!isDark);
+    window.api.saveTheme(newTheme); // Save the new theme
+  };
   const handleCardClick = (card) => {
     setSelectedCard(card); // Set the clicked card as selected
   };
