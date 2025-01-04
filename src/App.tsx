@@ -52,7 +52,7 @@ function App() {
   });
 
   const toggleTheme = () => {
-    console.log('toggleTheme called'); // Log when the function is triggered
+ //   console.log('toggleTheme called'); // Log when the function is triggered
     const newTheme = !isDark ? 'dark' : 'light';
     setIsDark(!isDark);
     window.api.saveTheme(newTheme); // Save the new theme
