@@ -4,7 +4,7 @@ import { Menu, Home, Settings, Users, FileText, Moon, Sun } from 'lucide-react';
 import { useSidebarStore } from '../store/sidebarStore';
 
 export const Sidebar: React.FC<{ toggleTheme: () => void; isDark: boolean }> = ({ toggleTheme, isDark }) => {
-  const { isLeftOpen, toggleLeft } = useSidebarStore();
+  const { isLeftOpen, toggleLeft, selectedPage, setSelectedPage } = useSidebarStore();
 
   const menuItems = [
     { icon: <Home size={20} />, label: 'Home' },
@@ -42,12 +42,17 @@ export const Sidebar: React.FC<{ toggleTheme: () => void; isDark: boolean }> = (
           <Button
             key={index}
             startIcon={item.icon}
+            onClick={() => setSelectedPage(item.label as any)} // Update selected page
             sx={{
               justifyContent: isLeftOpen ? 'flex-start' : 'center',
               textTransform: 'none',
               p: 2,
               width: '100%',
-              color: 'text.primary',
+              color: selectedPage === item.label ? 'primary.main' : 'text.primary',
+              backgroundColor: selectedPage === item.label ? 'action.selected' : 'transparent',
+              '&:hover': {
+                backgroundColor: 'action.hover',
+              },
             }}
           >
             {isLeftOpen && <Typography>{item.label}</Typography>}

@@ -1,15 +1,21 @@
-import { create } from 'zustand';
+import create from 'zustand';
 
-interface SidebarStore {
+type Page = 'Home' | 'Users' | 'Documents' | 'Settings';
+
+interface SidebarState {
   isLeftOpen: boolean;
-  isRightOpen: boolean;
   toggleLeft: () => void;
+  isRightOpen: boolean;
   toggleRight: () => void;
+  selectedPage: Page;
+  setSelectedPage: (page: Page) => void;
 }
 
-export const useSidebarStore = create<SidebarStore>((set) => ({
+export const useSidebarStore = create<SidebarState>((set) => ({
   isLeftOpen: true,
-  isRightOpen: true,
   toggleLeft: () => set((state) => ({ isLeftOpen: !state.isLeftOpen })),
+  isRightOpen: false,
   toggleRight: () => set((state) => ({ isRightOpen: !state.isRightOpen })),
+  selectedPage: 'Home',
+  setSelectedPage: (page) => set({ selectedPage: page }),
 }));
